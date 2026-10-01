@@ -8,7 +8,16 @@ const number = n => new Intl.NumberFormat('tr-TR').format(n);
 const icon = (name, size = 20) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${({ book: '<path d="M3 4h6q3 0 3 3 0-3 3-3h6v16h-6q-3 0-3 2 0-2-3-2H3z"/><path d="M12 7v15"/>', grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>', list: '<path d="M8 5h13M8 12h13M8 19h13M3 5h.01M3 12h.01M3 19h.01"/>', plus: '<path d="M12 5v14M5 12h14"/>', search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>', chart: '<path d="M4 3v18h17M8 16v-4M13 16V7M18 16V4"/>', upload: '<path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/>', settings: '<circle cx="12" cy="12" r="3"/><path d="m9 3-1 3-3 1-2 3 2 2-1 4 3 2 3-1 2 4 3-1 1-4 4-1 1-3-3-2V6l-3-2-3 1z"/>', heart: '<path d="M20 5c-3-3-6-1-8 1-2-2-5-4-8-1s-1 7 8 14c9-7 11-11 8-14z"/>', close: '<path d="m6 6 12 12M6 18 18 6"/>', check: '<path d="m5 12 4 4L19 6"/>', shelf: '<path d="M3 21h18M5 17V4h4v13M12 17V4h3v13m4 0-2-12 3-1 2 13"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>' })[name] || ''}</svg>`;
 let library = emptyLibrary(), view = 'all', query = '', sort = 'recent', layout = 'grid', ratingFilter = '', onlyFavorites = false, year = Number(today().slice(0, 4)), importResult = null, busy = false;
 let toastTimer;
-function toast(message, error = false) { $('#toast').textContent = message; $('#toast').className = error ? 'show error' : 'show'; clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').className = '', error ? 9000 : 4500); }
+function toast(message, error = false) {
+  $('#toast').textContent = message; $('#toast').className = error ? 'show error' : 'show';
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').className = '', error ? 9000 : 4500);
+  // Dialogs occupy the top layer; keep save errors visible inside an open dialog.
+  if (error && $('#modal').open) {
+    let alert = $('#modal .dialog-alert');
+    if (!alert) { alert = document.createElement('p'); alert.className = 'form-error dialog-alert'; alert.setAttribute('role', 'alert'); $('#modal').append(alert); }
+    alert.textContent = message; alert.scrollIntoView({ block: 'nearest' });
+  }
+}
 async function commit(next, message) {
   if (busy) return false;
   busy = true;
