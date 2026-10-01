@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173d38">
+  <meta name="description" content="Kişisel kitaplığın, okuma rafların ve yıllık okuma istatistiklerin.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; connect-src 'self' https://www.googleapis.com https://openlibrary.org https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Reading Follow Up · Kitaplığım</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./src/styles.css">
+  <script src="./config.js" defer></script>
+  <script src="./src/app.js" type="module"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Kitaplığa geç</a>
+  <div id="app"><p class="loading">Kitaplığın açılıyor…</p></div>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript>Kitaplığını kullanmak için JavaScript'i etkinleştir.</noscript>
+</body>
+</html>
